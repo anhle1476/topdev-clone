@@ -97,9 +97,13 @@ h6 {
 }
 
 /* cards */
-.card,
+.card {
+    height: 100%;
+}
+
 .card > a {
     height: 100%;
+    width: 100%;
 }
 
 .card .card-img-top {

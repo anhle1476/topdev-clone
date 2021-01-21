@@ -1,6 +1,7 @@
 package com.codegym.lqhanh.topdev_clone.models.modelcontainer;
 
 import com.codegym.lqhanh.topdev_clone.models.Category;
+import com.codegym.lqhanh.topdev_clone.models.Post;
 import com.codegym.lqhanh.topdev_clone.services.CategoryService;
 
 import java.util.Collection;
@@ -58,6 +59,11 @@ public class CategoryMap {
                 .stream()
                 .filter(category -> category.getParentId() == parentId)
                 .collect(Collectors.toList());
+    }
+
+    public String getFirstCategoryOfPost(Post post) {
+        int id = post.getCategories().get(0).getId();
+        return categoryMap.get(id).getName();
     }
 
     public String getNavBarHtml() {

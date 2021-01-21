@@ -6,7 +6,7 @@ public class Category {
     private int parentId;
 
     public Category(int id) {
-        this.id = id;
+        this(id, "No Data", 0);
     }
 
     public Category(int id, String name, int parentId) {

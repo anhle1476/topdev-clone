@@ -59,288 +59,39 @@
 
 <!-- categories post -->
 <div class="row category-posts">
-    <!-- Lap trinh -->
-<%--    <c:import url="include/homepageCategoryColumn.jsp">--%>
-<%--        <c:param name="categoryKey" value="cat-1"/>--%>
-<%--    </c:import>--%>
-    <div class="col-md-4 mb-4">
-        <c:set var="categoryPostList" value='${pageData.getPostListByKeyword("cat-1")}' />
-        <c:set var="firstPost" value="${categoryPostList.getPostByIndex(0)}"/>
+    <c:forEach begin="1" end="3" var="catCol">
+        <div class="col-md-4 mb-4">
+            <c:set var="categoryPostList" value='${pageData.getPostListByKeyword(String.format("cat-%d", catCol))}' />
+            <c:set var="firstPost" value="${categoryPostList.getPostByIndex(0)}"/>
 
-        <h1 class="py-4">${categoryPostList.getFirstPostCategory(sessionScope["categories"])}</h1>
-        <!-- category main post -->
-        <div class="card bg-image hover-zoom max-height-200">
-            <a href="<c:url value="/blog?site=post&post-id=${firstPost.id}" />">
-                <img alt="thumbnail-img" src="${firstPost.imgLink}"/>
-                <div class="mask card-content-overlay">
-                    <h5 class="text-white">${firstPost.title}</h5>
-                    <p>${firstPost.creationDate}</p>
-                </div>
-            </a>
-        </div>
-
-        <!-- other post -->
-        <c:forEach items="${categoryPostList.getPostsFromIndex(1)}" var="post">
-            <a href="<c:url value="/blog?site=post&post-id=${post.id}" />">
-                <div class="row no-gutters py-2">
-                    <div class="col-4">
-                        <img alt="thumbnail-img" class="card-img" src="${post.imgLink}"/>
+            <h1 class="py-4">${sessionScope["categories"].getFirstCategoryOfPost(firstPost)}</h1>
+            <!-- category main post -->
+            <div class="card max-height-200">
+                <a class="bg-image hover-zoom" href="<c:url value="/blog?site=post&post-id=${firstPost.id}" />">
+                    <img alt="thumbnail-img" src="${firstPost.imgLink}"/>
+                    <div class="mask card-content-overlay">
+                        <h5 class="text-white">${firstPost.title}</h5>
+                        <p>${firstPost.creationDate}</p>
                     </div>
-                    <div class="col-8 pl-1">
-                        <p class="font-weight-bold text-dark">${post.title}</p>
-                        <p class="text-small">${post.creationDate}</p>
+                </a>
+            </div>
+
+            <!-- other post -->
+            <c:forEach items="${categoryPostList.getPostsFromIndex(1)}" var="post">
+                <a href="<c:url value="/blog?site=post&post-id=${post.id}" />">
+                    <div class="row no-gutters py-2">
+                        <div class="col-4">
+                            <img alt="thumbnail-img" class="card-img" src="${post.imgLink}"/>
+                        </div>
+                        <div class="col-8 pl-1">
+                            <p class="font-weight-bold text-dark">${post.title}</p>
+                            <p class="text-small">${post.creationDate}</p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </c:forEach>
-    </div>
-<%--    <div class="col-md-4 mb-4">--%>
-<%--        <h1 class="py-4">Lập trình</h1>--%>
-<%--        <!-- category main post -->--%>
-<%--        <div class="card bg-image hover-zoom max-height-200">--%>
-<%--            <img alt="thumbnail-img" src="https://via.placeholder.com/800x500"/>--%>
-<%--            <div class="mask card-content-overlay">--%>
-<%--                <h5 class="text-white">--%>
-<%--                    Lorem ipsum dolor sit amet consectetur adipisicing elit.--%>
-<%--                    Numquam, perspiciatis?--%>
-<%--                </h5>--%>
-<%--                <p>Lorem ipsum dolor sit amet.</p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <!-- other post -->--%>
-<%--        <div class="row no-gutters py-2">--%>
-<%--            <div class="col-4">--%>
-<%--                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>--%>
-<%--            </div>--%>
-<%--            <div class="col-8 pl-1">--%>
-<%--                <p class="font-weight-bold text-dark">--%>
-<%--                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,--%>
-<%--                    odit.--%>
-<%--                </p>--%>
-
-<%--                <p class="text-small">Lorem ipsum dolor sit.</p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row no-gutters py-2">--%>
-<%--            <div class="col-4">--%>
-<%--                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>--%>
-<%--            </div>--%>
-<%--            <div class="col-8 pl-1">--%>
-<%--                <p class="font-weight-bold text-dark">--%>
-<%--                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,--%>
-<%--                    odit.--%>
-<%--                </p>--%>
-<%--                <p class="text-small">Lorem ipsum dolor sit.</p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row no-gutters py-2">--%>
-<%--            <div class="col-4">--%>
-<%--                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>--%>
-<%--            </div>--%>
-<%--            <div class="col-8 pl-1">--%>
-<%--                <p class="font-weight-bold text-dark">--%>
-<%--                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,--%>
-<%--                    odit.--%>
-<%--                </p>--%>
-<%--                <p class="text-small">Lorem ipsum dolor sit.</p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row no-gutters py-2">--%>
-<%--            <div class="col-4">--%>
-<%--                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>--%>
-<%--            </div>--%>
-<%--            <div class="col-8 pl-1">--%>
-<%--                <p class="font-weight-bold text-dark">--%>
-<%--                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,--%>
-<%--                    odit.--%>
-<%--                </p>--%>
-<%--                <p class="text-small">Lorem ipsum dolor sit.</p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-
-<%--        <div class="row no-gutters py-2">--%>
-<%--            <div class="col-4">--%>
-<%--                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>--%>
-<%--            </div>--%>
-<%--            <div class="col-8 pl-1">--%>
-<%--                <p class="font-weight-bold text-dark">--%>
-<%--                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,--%>
-<%--                    odit.--%>
-<%--                </p>--%>
-<%--                <p class="text-small">Lorem ipsum dolor sit.</p>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-
-    <!-- HR -->
-    <div class="col-md-4 mb-4">
-        <h1 class="py-4">HR</h1>
-        <!-- category main post -->
-        <div class="card bg-image hover-zoom max-height-200">
-            <img alt="thumbnail-img" src="https://via.placeholder.com/800x500"/>
-            <div class="mask card-content-overlay">
-                <h5 class="text-white">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Numquam, perspiciatis?
-                </h5>
-                <p>Lorem ipsum dolor sit amet.</p>
-            </div>
+                </a>
+            </c:forEach>
         </div>
-
-        <!-- other post -->
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Phong van -->
-    <div class="col-md-4 mb-4">
-        <h1 class="py-4">Phỏng vấn</h1>
-        <!-- category main post -->
-        <div class="card bg-image hover-zoom max-height-200">
-            <img alt="thumbnail-img" src="https://via.placeholder.com/800x500"/>
-            <div class="mask card-content-overlay">
-                <h5 class="text-white">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Numquam, perspiciatis?
-                </h5>
-                <p>Lorem ipsum dolor sit amet.</p>
-            </div>
-        </div>
-
-        <!-- other post -->
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-
-        <div class="row no-gutters py-2">
-            <div class="col-4">
-                <img alt="thumbnail-img" class="card-img" src="https://via.placeholder.com/800x500"/>
-            </div>
-            <div class="col-8 pl-1">
-                <p class="font-weight-bold text-dark">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-                    odit.
-                </p>
-                <p class="text-small">Lorem ipsum dolor sit.</p>
-            </div>
-        </div>
-    </div>
+    </c:forEach>
 </div>
 
 <!-- 2nd category post -->
