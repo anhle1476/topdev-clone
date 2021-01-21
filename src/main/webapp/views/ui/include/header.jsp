@@ -23,9 +23,10 @@
 </div>
 <div class="container">
     <!-- Main logo -->
-    <img src="${pageContext.servletContext.contextPath}/ui-assets/image/logo-new-1.png" alt="logo"
-         class="max-height-125 py-3"/>
-
+    <a href="<c:url value="/blog?site=home"/>">
+        <img src="${pageContext.servletContext.contextPath}/ui-assets/image/logo-new-1.png" alt="logo"
+             class="max-height-125 py-3"/>
+    </a>
     <!-- Nav-bar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-primary py-2 py-md-0">
         <button

@@ -39,11 +39,4 @@ public class PostList {
         }
         return result;
     }
-
-    public String getFirstPostCategory(CategoryMap map) {
-        if (posts.isEmpty())
-            return "No category";
-        int firstId = posts.get(0).getId();
-        return map.getCategoryById(firstId).getName();
-    }
 }

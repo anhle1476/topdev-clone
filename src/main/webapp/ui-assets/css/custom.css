@@ -27,6 +27,14 @@ h6 {
     color: var(--main-color) !important;
 }
 
+.fix-height-250 {
+    height: 250px
+}
+
+.fix-height-500 {
+    height: 500px
+}
+
 .max-height-125 {
     max-height: 125px;
 }

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/blog")
 public class BlogServlet extends HttpServlet {
@@ -40,6 +39,7 @@ public class BlogServlet extends HttpServlet {
     }
 
     private void forwardToPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             int postId = Integer.parseInt(request.getParameter("post-id"));
             Post post = postsService.getPostById(postId);
