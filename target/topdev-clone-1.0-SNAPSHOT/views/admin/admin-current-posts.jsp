@@ -74,17 +74,18 @@
                                     <c:forEach items='${requestScope["postList"]}' var="post">
                                         <tr>
                                             <td>${post.title}</td>
-                                            <td>${post.summary}</td>
+                                            <td class="shorten">${post.summary}</td>
                                             <td>${post.author.name}</td>
                                             <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${post.creationDate}" /></td>
                                             <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${post.lastUpdated}" /></td>
                                             <td>
-                                                <button
+                                                <a
                                                         class="btn btn-info btn-sm btn-edit"
                                                         title="Chỉnh sửa"
+                                                        href="${pageContext.servletContext.contextPath}/admin/editor?edit=exists-post&post-id=${post.id}"
                                                 >
                                                     <i class="fas fa-pencil-alt"></i>
-                                                </button>
+                                                </a>
                                                 <button
                                                         class="btn btn-danger btn-sm btn-edit"
                                                         title="Xóa"
@@ -147,6 +148,12 @@
             info: true,
             paging: true,
         });
+    });
+    document.querySelectorAll(".shorten").forEach(cell => {
+        let text = cell.innerText;
+        if (text.length > 150) {
+            cell.innerText = text.slice(0, 150) + "..."
+        }
     });
 </script>
 </body>

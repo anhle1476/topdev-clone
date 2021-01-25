@@ -3,6 +3,7 @@ package com.codegym.lqhanh.topdev_clone.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Post {
     private int id;
@@ -48,10 +49,7 @@ public class Post {
     }
 
     public String getSummary() {
-        if (summary.length() < 150)
-            return summary;
-        else
-            return summary.substring(0, 150) +"...";
+        return summary;
     }
 
     public void setSummary(String summary) {
@@ -129,6 +127,16 @@ public class Post {
 
     public void addTag(Tag tagList) {
         this.tagList.add(tagList);
+    }
+
+    public String getFormattedTagList() {
+        return tagList.stream()
+                .map(Tag::getName)
+                .collect(Collectors.joining(", "));
+    }
+
+    public boolean containsCategory(int categoryId) {
+        return categories.stream().anyMatch(category -> category.getId() == categoryId);
     }
 
     @Override

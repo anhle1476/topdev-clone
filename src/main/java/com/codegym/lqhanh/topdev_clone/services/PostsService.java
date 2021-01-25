@@ -2,6 +2,7 @@ package com.codegym.lqhanh.topdev_clone.services;
 
 import com.codegym.lqhanh.topdev_clone.dao.PostsDAO;
 import com.codegym.lqhanh.topdev_clone.models.Post;
+import com.codegym.lqhanh.topdev_clone.models.User;
 import com.codegym.lqhanh.topdev_clone.models.modelcontainer.PostListingData;
 
 import java.sql.SQLException;
@@ -54,6 +55,24 @@ public class PostsService {
         } catch (SQLException e) {
             System.out.println("Fetch posts failed: " + e.getMessage());
             return Collections.emptyList();
+        }
+    }
+
+    public Post getEditingPost(int postId, User requestUser) {
+        try {
+            return postsDAO.getEditingPost(postId, requestUser.getId());
+        } catch (SQLException e) {
+            System.out.println("Fetch post ID" + postId + " failed: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public String editPost(Post post, User requestUser) {
+        try {
+            return postsDAO.editPost(post, requestUser.getId());
+        } catch (SQLException e) {
+            System.out.println("Edit post ID" + post.getId() + " failed: " + e.getMessage());
+            return e.getMessage();
         }
     }
 }

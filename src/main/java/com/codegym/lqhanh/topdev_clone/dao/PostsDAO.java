@@ -28,17 +28,31 @@ public class PostsDAO {
             statement.setString(3, post.getImgLink());
             statement.setString(4, post.getContent());
             statement.setInt(5, post.getAuthor().getId());
-            statement.setString(6, parseTagList(post));
+            statement.setString(6, post.getFormattedTagList());
             statement.setString(7, parseCategoryList(post));
             statement.execute();
         }
     }
 
-    private String parseTagList(Post post) {
-        return post.getTagList()
-                .stream()
-                .map(Tag::getName)
-                .collect(Collectors.joining(","));
+    public String editPost(Post post, int requestUserId) throws SQLException {
+        try (
+                Connection con = DAOUtils.getConnection();
+                CallableStatement statement = con.prepareCall("{CALL editPost(?, ?, ?, ?, ?, ?, ?, ?)}")
+        ) {
+            statement.setInt(1, requestUserId);
+            statement.setInt(2, post.getId());
+            statement.setString(3, post.getTitle());
+            statement.setString(4, post.getSummary());
+            statement.setString(5, post.getImgLink());
+            statement.setString(6, post.getContent());
+            statement.setString(7, post.getFormattedTagList());
+            statement.setString(8, parseCategoryList(post));
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next())
+                throw new SQLException("Can not fetch result");
+            else
+                return resultSet.getString("result");
+        }
     }
 
     private String parseCategoryList(Post post) {
@@ -56,7 +70,8 @@ public class PostsDAO {
             statement.setInt(1, id);
             // GET POST DETAILS
             ResultSet postDetailSet = statement.executeQuery();
-            if (!postDetailSet.next()) return null;
+            if (!postDetailSet.next())
+                throw new SQLException("No post exists");
             Post postWithContent = extractPostWithContent(postDetailSet);
             // ADD CATEGORIES
             statement.getMoreResults();
@@ -72,7 +87,7 @@ public class PostsDAO {
     }
 
     private Category extractCategory(ResultSet results) throws SQLException {
-        int id = results.getInt("category_id");
+        int id = parseCategoryId(results);
         String name = results.getString("name");
         int parentId = results.getInt("parent_id");
         return new Category(id, name, parentId);
@@ -130,9 +145,50 @@ public class PostsDAO {
         }
     }
 
+    public Post getEditingPost(int postId, int requestUser) throws SQLException {
+        try (
+                Connection con = DAOUtils.getConnection();
+                CallableStatement statement = con.prepareCall("{CALL getPostToEdit(?, ?)}");
+        ) {
+            statement.setInt(1, postId);
+            statement.setInt(2, requestUser);
+
+            ResultSet results = statement.executeQuery();
+            if (!results.next()) throw new SQLException("No post exists");
+            Post editingPost = extractEditingPost(results);
+
+            // ADD CATEGORIES
+            statement.getMoreResults();
+            ResultSet categorySet = statement.getResultSet();
+            while (categorySet.next()) {
+                int categoryId = parseCategoryId(categorySet);
+                Category category = new Category(categoryId);
+                editingPost.addCategory(category);
+            }
+            // ADD TAGS
+            statement.getMoreResults();
+            ResultSet tagSet = statement.getResultSet();
+            addTagsToPost(tagSet, editingPost);
+
+            return editingPost;
+        }
+    }
+
+    private Post extractEditingPost(ResultSet results) throws SQLException {
+        String content = parseContent(results);
+        String imgLink = parseImgLink(results);
+        String summary = parseSummary(results);
+
+        return extractBasicPostBuilder(results)
+                .setSummary(summary)
+                .setContent(content)
+                .setImgLink(imgLink)
+                .build();
+    }
+
     private Post extractPostWithContent(ResultSet results) throws SQLException {
-        String content = results.getString("content");
-        String imgLink = results.getString("img_link");
+        String content = parseContent(results);
+        String imgLink = parseImgLink(results);
         User author = parseAuthor(results);
 
         return extractBasicPostBuilder(results)
@@ -142,9 +198,10 @@ public class PostsDAO {
                 .build();
     }
 
+
     private Post extractPostWithCategoryId(ResultSet results) throws SQLException {
-        String imgLink = results.getString("img_link");
-        int categoryId = results.getInt("category_id");
+        String imgLink = parseImgLink(results);
+        int categoryId = parseCategoryId(results);
         Category category = new Category(categoryId);
 
         return extractBasicPostBuilder(results)
@@ -154,10 +211,10 @@ public class PostsDAO {
     }
 
     private Post extractPostOfAdminPage(ResultSet results) throws SQLException {
-        String summary = results.getString("summary");
+        String summary = parseSummary(results);
         User author = parseAuthor(results);
-        Date lastUpdatedDate = parseDate(results, "last_updated");
-        boolean isApproved = results.getBoolean("is_approved");
+        Date lastUpdatedDate = parseLastUpdated(results);
+        boolean isApproved = parseApproved(results);
 
         return extractBasicPostBuilder(results)
                 .setSummary(summary)
@@ -168,16 +225,16 @@ public class PostsDAO {
     }
 
     private Post extractBasicPost(ResultSet results) throws SQLException {
-        String imgLink = results.getString("img_link");
+        String imgLink = parseImgLink(results);
         return extractBasicPostBuilder(results)
                 .setImgLink(imgLink)
                 .build();
     }
 
     private Post.PostBuilder extractBasicPostBuilder(ResultSet results) throws SQLException {
-        int id = results.getInt("id");
-        String title = results.getString("title");
-        Date creationDate = parseDate(results, "created");
+        int id = parseId(results);
+        String title = parseTitle(results);
+        Date creationDate = parseCreationDate(results);
 
         return new Post.PostBuilder(title)
                 .setId(id)
@@ -185,14 +242,9 @@ public class PostsDAO {
     }
 
     private User parseAuthor(ResultSet results) throws SQLException {
-        int authorId = results.getInt("author");
+        int authorId = parseAuthorId(results);
         String authorName = results.getString("authorName");
         return new User(authorId, authorName);
-    }
-
-    private Date parseDate(ResultSet results, String columnName) throws SQLException {
-        String lastUpdatedStr = results.getString(columnName);
-        return StringUtils.parseDateFromDatabase(lastUpdatedStr);
     }
 
     private void addCategoriesToPost(ResultSet categorySet, Post postWithContent) throws SQLException {
@@ -202,10 +254,56 @@ public class PostsDAO {
         }
     }
 
-    private void addTagsToPost(ResultSet tagSet, Post postWithContent) throws SQLException {
+    private void addTagsToPost(ResultSet tagSet, Post post) throws SQLException {
         while (tagSet.next()) {
-            Tag category = extractTag(tagSet);
-            postWithContent.addTag(category);
+            Tag tag = extractTag(tagSet);
+            System.out.println("add tag: " + tag);
+            post.addTag(tag);
         }
+    }
+
+    private String parseImgLink(ResultSet results) throws SQLException {
+        return results.getString("img_link");
+    }
+
+    private String parseContent(ResultSet results) throws SQLException {
+        return results.getString("content");
+    }
+
+    private String parseTitle(ResultSet results) throws SQLException {
+        return results.getString("title");
+    }
+
+    private int parseAuthorId(ResultSet results) throws SQLException {
+        return results.getInt("author");
+    }
+
+    private int parseId(ResultSet results) throws SQLException {
+        return results.getInt("id");
+    }
+
+    private String parseSummary(ResultSet results) throws SQLException {
+        return results.getString("summary");
+    }
+
+    private boolean parseApproved(ResultSet results) throws SQLException {
+        return results.getBoolean("is_approved");
+    }
+
+    private Date parseCreationDate(ResultSet results) throws SQLException {
+        return parseDate(results, "created");
+    }
+
+    private int parseCategoryId(ResultSet results) throws SQLException {
+        return results.getInt("category_id");
+    }
+
+    private Date parseLastUpdated(ResultSet results) throws SQLException {
+        return parseDate(results, "last_updated");
+    }
+
+    private Date parseDate(ResultSet results, String columnName) throws SQLException {
+        String lastUpdatedStr = results.getString(columnName);
+        return StringUtils.parseDateFromDatabase(lastUpdatedStr);
     }
 }

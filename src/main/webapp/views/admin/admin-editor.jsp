@@ -21,6 +21,12 @@
     <!-- Main Sidebar Container -->
     <c:import url="include/sidebar.jsp"></c:import>
 
+    <c:set var="isNewPost" value='${ requestScope["post-id"] == 0 }'/>
+    <c:set var="postData" value='${requestScope["post-data"]}'/>
+    <c:if test="${!isNewPost && postData == null}">
+        <c:redirect url="/admin?site=dashboard"/>
+    </c:if>
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -28,7 +34,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Bài viết mới</h1>
+                        <c:choose>
+                            <c:when test="${isNewPost}">
+                                <h1>Bài viết mới</h1>
+                            </c:when>
+                            <c:otherwise>
+                                <h1>Chỉnh sửa bài viết</h1>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>
@@ -43,37 +56,44 @@
                         <form action="${pageContext.servletContext.contextPath}/edit-post" method="post">
                             <input type="hidden"
                                    name="post-id"
-                                   value='<%= (Integer) request.getAttribute("post-id") %>'>
+                                   value='${requestScope["post-id"]}'>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="title">Tiêu đề</label>
                                     <input id="title" name="title" type="text" class="form-control" required
-                                           placeholder="Tiêu đề ...">
+                                           placeholder="Tiêu đề ..." value="${postData.title}">
                                 </div>
                                 <div class="form-group">
                                     <label for="img-link">Ảnh bìa</label>
                                     <input id="img-link" name="img-link" type="text" class="form-control" required
-                                           placeholder="Ex: https://via.placeholder.com/800x500 ...">
+                                           placeholder="Ex: https://via.placeholder.com/800x500 ..."
+                                           value="${postData.imgLink}"
+                                    >
                                 </div>
                                 <div class="form-group">
                                     <label for="summary">Tóm tắt</label>
                                     <textarea id="summary" name="summary" class="form-control" rows="4" required
-                                              placeholder="Tóm tắt bài viết ..."></textarea>
+                                              placeholder="Tóm tắt bài viết ...">${postData.summary}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="summernote">Nội dung</label>
                                     <textarea id="summernote" name="content" required>
-                                        Viết <em>bài</em> <u>tại</u> <strong>đây</strong>
+                                        <c:if test="${isNewPost}">
+                                            Viết <em>bài</em> <u>tại</u> <strong>đây</strong>
+                                        </c:if>
+                                        ${postData.content}
                                     </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="tags">Tag</label>
                                     <input id="tags" name="tags" type="text" class="form-control" required
-                                           placeholder="Ex: lập trình viên, coding, testing (cách nhau bởi dấu phẩy) ...">
+                                           placeholder="Ex: lập trình viên, coding, testing (cách nhau bởi dấu phẩy) ..."
+                                           value="${postData.getFormattedTagList()}"
+                                    >
                                 </div>
                                 <div class="form-group">
                                     <label>Chủ đề</label>
-                                    <div class="row">
+                                    <div class="row categories">
 
                                         <c:forEach items='${sessionScope["categories"].getCategories()}' var="category">
                                             <div class="form-check col-md-3 col-sm-6">
@@ -82,6 +102,7 @@
                                                        type="checkbox"
                                                        name="cat-${category.id}"
                                                        value="${category.id}"
+                                                       aria-checked="${postData.containsCategory(category.id)}"
                                                 >
                                                 <label for="cat-${category.id}"
                                                        class="form-check-label">${category.name}</label>
@@ -122,6 +143,11 @@
         // Summernote
         $("#summernote").summernote();
     });
+    document.querySelectorAll('.categories input[type=checkbox]')
+        .forEach(checkbox => {
+            if (checkbox.ariaChecked === "true")
+                checkbox.checked = true
+        })
 </script>
 </body>
 </html>

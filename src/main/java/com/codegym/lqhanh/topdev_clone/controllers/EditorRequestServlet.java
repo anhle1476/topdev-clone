@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -31,12 +32,30 @@ public class EditorRequestServlet extends HttpServlet {
         int postId = Integer.parseInt(request.getParameter("post-id"));
         if (postId == 0)
             createNewPost(request, response);
+        else
+            editExistsPost(request, response);
     }
 
+
     private void createNewPost(HttpServletRequest request, HttpServletResponse response) {
+        Post newPost = parsePostFromEditor(request);
+        postsService.addNewPost(newPost);
+    }
+
+
+    private void editExistsPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Post post = parsePostFromEditor(request);
+        User user = (User) request.getSession().getAttribute("user");
+        String result = postsService.editPost(post, user);
+        PrintWriter writer = response.getWriter();
+        writer.println(result);
+    }
+
+    private Post parsePostFromEditor(HttpServletRequest request) {
         CategoryMap categoryMap = (CategoryMap) request.getSession().getAttribute("categories");
         Set<Integer> categoryIds = categoryMap.getCategoryIds();
 
+        int postId = Integer.parseInt(request.getParameter("post-id"));
         String title = request.getParameter("title");
         String imgLink = request.getParameter("img-link");
         String summary = request.getParameter("summary");
@@ -52,7 +71,8 @@ public class EditorRequestServlet extends HttpServlet {
 
         User author = new User(1, "Root User");
 
-        Post newPost = new Post.PostBuilder(title)
+        Post post = new Post.PostBuilder(title)
+                .setId(postId)
                 .setImgLink(imgLink)
                 .setSummary(summary)
                 .setContent(content)
@@ -60,13 +80,13 @@ public class EditorRequestServlet extends HttpServlet {
                 .build();
 
         for (String tagName : tagNames) {
-            newPost.addTag(new Tag(tagName));
+            post.addTag(new Tag(tagName));
         }
 
         for (Integer categoryId : postCategoryIds) {
-            newPost.addCategory(categoryMap.getCategoryById(categoryId));
+            post.addCategory(categoryMap.getCategoryById(categoryId));
         }
-
-        postsService.addNewPost(newPost);
+        return post;
     }
+
 }
