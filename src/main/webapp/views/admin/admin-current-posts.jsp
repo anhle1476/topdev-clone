@@ -1,20 +1,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
     <c:import url="include/baseHeader.jsp"></c:import>
+    <title>Current Post - Topdev CLONE</title>
 
     <!-- DataTables -->
     <link
             rel="stylesheet"
-            href="../../admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"
+            href="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"
     />
     <link
             rel="stylesheet"
-            href="../../admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"
+            href="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"
     />
 
 </head>
@@ -63,279 +65,43 @@
                                         <th>Tiêu đề</th>
                                         <th>Tóm tắt</th>
                                         <th>Tác giả</th>
-                                        <th>Cập nhật lần cuối</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing
-                                            elit. Deserunt, minima.
-                                        </td>
-                                        <td>
-                                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                                            elit. Sequi atque nihil eius ab quasi!
-                                            Exercitationem veritatis molestiae labore architecto
-                                            nihil quasi atque corporis eveniet porro placeat,
-                                            nesciunt similique. Est, quaerat!
-                                        </td>
-                                        <td>Lorem ipsum dolor sit.</td>
-                                        <td>04/10/2020</td>
-                                        <td>
-                                            <button
-                                                    class="btn btn-info btn-sm btn-edit"
-                                                    title="Chỉnh sửa"
-                                            >
-                                                <i class="fas fa-pencil-alt"></i>
-                                            </button>
-                                            <button
-                                                    class="btn btn-danger btn-sm btn-edit"
-                                                    title="Xóa"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <c:forEach items='${requestScope["postList"]}' var="post">
+                                        <tr>
+                                            <td>${post.title}</td>
+                                            <td>${post.summary}</td>
+                                            <td>${post.author.name}</td>
+                                            <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${post.creationDate}" /></td>
+                                            <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${post.lastUpdated}" /></td>
+                                            <td>
+                                                <button
+                                                        class="btn btn-info btn-sm btn-edit"
+                                                        title="Chỉnh sửa"
+                                                >
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </button>
+                                                <button
+                                                        class="btn btn-danger btn-sm btn-edit"
+                                                        title="Xóa"
+                                                >
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                     </tbody>
                                     <tfoot>
                                     <tr>
                                         <th>Tiêu đề</th>
                                         <th>Tóm tắt</th>
                                         <th>Tác giả</th>
-                                        <th>Cập nhật lần cuối</th>
+                                        <th>Ngày tạo</th>
+                                        <th>Ngày cập nhật</th>
                                         <th>Hành động</th>
                                     </tr>
                                     </tfoot>
@@ -356,20 +122,20 @@
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <c:import url="include/footer.jsp"></c:import>
+    <c:import url="include/footer.jsp"/>
 </div>
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-<c:import url="include/baseJs.jsp" ></c:import>
+<c:import url="include/baseJs.jsp"/>
 <!-- DataTables  & Plugins -->
-<script src="../../admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="../../admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="../../admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="../../admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 <!-- AdminLTE for demo purposes -->
-<script src="../../admin-assets/dist/js/demo.js"></script>
+<script src="${pageContext.servletContext.contextPath}/admin-assets/dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
     $(function () {

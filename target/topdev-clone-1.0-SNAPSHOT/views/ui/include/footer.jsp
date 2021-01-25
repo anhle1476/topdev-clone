@@ -1,9 +1,11 @@
+
 <!-- Footer -->
 <footer class="bg-primary mt-5">
     <div class="container py-5">
         <div class="row pt-3">
             <div class="col-3 col-md-2">
-                <img alt="footer-logo" src="${pageContext.servletContext.contextPath}/ui-assets/image/logo-td.png" class="w-100"/>
+                <img alt="footer-logo" src="${pageContext.servletContext.contextPath}/ui-assets/image/logo-td.png"
+                     class="w-100"/>
             </div>
             <div class="col-9 col-md-10">
                 <div class="row">

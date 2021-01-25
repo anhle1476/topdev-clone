@@ -28,11 +28,11 @@ h6 {
 }
 
 .fix-height-250 {
-    height: 250px
+    height: 250px !important;
 }
 
 .fix-height-500 {
-    height: 500px
+    height: 500px !important;
 }
 
 .max-height-125 {

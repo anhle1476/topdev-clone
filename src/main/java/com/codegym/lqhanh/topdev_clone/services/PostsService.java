@@ -47,4 +47,13 @@ public class PostsService {
             return null;
         }
     }
+
+    public List<Post> getApprovedPostsByUserId(int id) {
+        try {
+            return postsDAO.getApprovedPostsUnderUserAuthorized(id);
+        } catch (SQLException e) {
+            System.out.println("Fetch posts failed: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
 }

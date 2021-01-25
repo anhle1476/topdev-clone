@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @WebServlet("/edit-post")
-public class EditPostServlet extends HttpServlet {
+public class EditorRequestServlet extends HttpServlet {
     private final PostsService postsService = new PostsService();
 
     @Override

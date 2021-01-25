@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class StringUtils {
     private static final Pattern NORMALIZE_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-    private static final SimpleDateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
 
     public static String removeAccent(String input) {
         input = input.toLowerCase();
@@ -27,6 +27,10 @@ public class StringUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String formatDate(Date date) {
+        return dateParser.format(date);
     }
 
     public static List<String> parseTagsInput(String input) {

@@ -11,7 +11,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class PostsDAO {
@@ -46,24 +48,6 @@ public class PostsDAO {
                 .collect(Collectors.joining(","));
     }
 
-//    public List<Post> getNewestPostThumbnail() throws SQLException {
-//        try (
-//                Connection connection = DAOUtils.getConnection();
-//                Statement statement = connection.createStatement()
-//        ) {
-//            ResultSet results = statement.executeQuery("SELECT id, title, summary, img_link, last_updated " +
-//                    "FROM posts " +
-//                    "ORDER BY last_updated DESC " +
-//                    "LIMIT 20;");
-//            List<Post> posts = new ArrayList<>();
-//            while (results.next()) {
-//                Post currPost = extractBasicPostFromResultSet(results);
-//                posts.add(currPost);
-//            }
-//            return posts;
-//        }
-//    }
-
     public Post getPostById(int id) throws SQLException {
         try (
                 Connection con = DAOUtils.getConnection();
@@ -73,7 +57,7 @@ public class PostsDAO {
             // GET POST DETAILS
             ResultSet postDetailSet = statement.executeQuery();
             if (!postDetailSet.next()) return null;
-            Post postWithContent = extractPostWithContentFromResultSet(postDetailSet);
+            Post postWithContent = extractPostWithContent(postDetailSet);
             // ADD CATEGORIES
             statement.getMoreResults();
             ResultSet categorySet = statement.getResultSet();
@@ -87,14 +71,14 @@ public class PostsDAO {
         }
     }
 
-    private Category extractCategoryFromResultSet(ResultSet results) throws SQLException {
+    private Category extractCategory(ResultSet results) throws SQLException {
         int id = results.getInt("category_id");
         String name = results.getString("name");
         int parentId = results.getInt("parent_id");
         return new Category(id, name, parentId);
     }
 
-    private Tag extractTagFromResultSet(ResultSet results) throws SQLException {
+    private Tag extractTag(ResultSet results) throws SQLException {
         int id = results.getInt("tag_id");
         String name = results.getString("name");
         return new Tag(id, name);
@@ -110,7 +94,7 @@ public class PostsDAO {
             // fetch newest posts
             ResultSet newestPostSet = stm.executeQuery();
             while (newestPostSet.next()) {
-                Post newestPost = extractBasicPostFromResultSet(newestPostSet);
+                Post newestPost = extractBasicPost(newestPostSet);
                 data.addPost("newest", newestPost);
             }
 
@@ -120,7 +104,7 @@ public class PostsDAO {
                 ResultSet categoryPostSet = stm.getResultSet();
                 String categoryKey = "cat-" + categoryCount++;
                 while (categoryPostSet.next()) {
-                    Post categoryPost = extractPostWithCategoryIdFromResultSet(categoryPostSet);
+                    Post categoryPost = extractPostWithCategoryId(categoryPostSet);
                     data.addPost(categoryKey, categoryPost);
                 }
             }
@@ -129,56 +113,98 @@ public class PostsDAO {
         }
     }
 
-    private Post extractPostWithContentFromResultSet(ResultSet results) throws SQLException {
+    public List<Post> getApprovedPostsUnderUserAuthorized(int userId) throws SQLException {
+        try (
+                Connection con = DAOUtils.getConnection();
+                CallableStatement statement = con.prepareCall("{CALL getApprovedPostsUnderUserAuthorized(?)}")
+        ) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            List<Post> posts = new ArrayList<>();
+            while (resultSet.next()) {
+                Post post = extractPostOfAdminPage(resultSet);
+                posts.add(post);
+            }
+            return posts;
+        }
+    }
+
+    private Post extractPostWithContent(ResultSet results) throws SQLException {
         String content = results.getString("content");
+        String imgLink = results.getString("img_link");
+        User author = parseAuthor(results);
 
-        int authorId = results.getInt("author");
-        String authorName = results.getString("name");
-        User user = new User(authorId, authorName);
-
-        return extractBasicPostBuilderFromResultSet(results)
+        return extractBasicPostBuilder(results)
                 .setContent(content)
-                .setAuthor(user)
+                .setAuthor(author)
+                .setImgLink(imgLink)
                 .build();
     }
 
-    private Post extractPostWithCategoryIdFromResultSet(ResultSet results) throws SQLException {
+    private Post extractPostWithCategoryId(ResultSet results) throws SQLException {
+        String imgLink = results.getString("img_link");
         int categoryId = results.getInt("category_id");
         Category category = new Category(categoryId);
 
-        return extractBasicPostBuilderFromResultSet(results)
+        return extractBasicPostBuilder(results)
                 .addCategory(category)
+                .setImgLink(imgLink)
                 .build();
     }
 
-    private Post extractBasicPostFromResultSet(ResultSet results) throws SQLException {
-        return extractBasicPostBuilderFromResultSet(results).build();
+    private Post extractPostOfAdminPage(ResultSet results) throws SQLException {
+        String summary = results.getString("summary");
+        User author = parseAuthor(results);
+        Date lastUpdatedDate = parseDate(results, "last_updated");
+        boolean isApproved = results.getBoolean("is_approved");
+
+        return extractBasicPostBuilder(results)
+                .setSummary(summary)
+                .setLastUpdated(lastUpdatedDate)
+                .setApproved(isApproved)
+                .setAuthor(author)
+                .build();
     }
 
-    private Post.PostBuilder extractBasicPostBuilderFromResultSet(ResultSet results) throws SQLException {
+    private Post extractBasicPost(ResultSet results) throws SQLException {
+        String imgLink = results.getString("img_link");
+        return extractBasicPostBuilder(results)
+                .setImgLink(imgLink)
+                .build();
+    }
+
+    private Post.PostBuilder extractBasicPostBuilder(ResultSet results) throws SQLException {
         int id = results.getInt("id");
         String title = results.getString("title");
-        String imgLink = results.getString("img_link");
-        String creationDateStr = results.getString("created");
-        Date creationDate = StringUtils.parseDateFromDatabase(creationDateStr);
+        Date creationDate = parseDate(results, "created");
 
         return new Post.PostBuilder(title)
                 .setId(id)
-                .setImgLink(imgLink)
                 .setCreationDate(creationDate);
     }
 
+    private User parseAuthor(ResultSet results) throws SQLException {
+        int authorId = results.getInt("author");
+        String authorName = results.getString("authorName");
+        return new User(authorId, authorName);
+    }
+
+    private Date parseDate(ResultSet results, String columnName) throws SQLException {
+        String lastUpdatedStr = results.getString(columnName);
+        return StringUtils.parseDateFromDatabase(lastUpdatedStr);
+    }
 
     private void addCategoriesToPost(ResultSet categorySet, Post postWithContent) throws SQLException {
         while (categorySet.next()) {
-            Category category = extractCategoryFromResultSet(categorySet);
+            Category category = extractCategory(categorySet);
             postWithContent.addCategory(category);
         }
     }
 
     private void addTagsToPost(ResultSet tagSet, Post postWithContent) throws SQLException {
         while (tagSet.next()) {
-            Tag category = extractTagFromResultSet(tagSet);
+            Tag category = extractTag(tagSet);
             postWithContent.addTag(category);
         }
     }

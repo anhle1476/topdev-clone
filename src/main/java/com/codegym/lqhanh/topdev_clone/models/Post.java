@@ -48,7 +48,10 @@ public class Post {
     }
 
     public String getSummary() {
-        return summary;
+        if (summary.length() < 150)
+            return summary;
+        else
+            return summary.substring(0, 150) +"...";
     }
 
     public void setSummary(String summary) {

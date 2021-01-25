@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="include/header.jsp"></c:import>
 
@@ -25,7 +26,7 @@
                         <h3 class="text-white">
                                 ${post.title}
                         </h3>
-                        <p>${post.creationDate}</p>
+                        <p><fmt:formatDate pattern="dd-MM-yyyy" value="${post.creationDate}"/></p>
                     </div>
                 </a>
             </div>
@@ -49,7 +50,9 @@
                             <p class="font-weight-bold text-dark mb-1">
                                     ${newestPost.title}
                             </p>
-                            <p class="text-small">${newestPost.creationDate}</p>
+                            <p class="text-small">
+                                <fmt:formatDate pattern="dd-MM-yyyy" value="${newestPost.creationDate}"/>
+                            </p>
                         </div>
                     </a>
                 </div>
@@ -67,12 +70,14 @@
 
                 <h1 class="py-4">${sessionScope["categories"].getFirstCategoryOfPost(firstPost)}</h1>
                 <!-- category main post -->
-                <div class="card bg-image hover-zoom max-height-200">
+                <div class="card bg-image hover-zoom fix-height-250">
                     <a href="<c:url value="/blog?site=post&post-id=${firstPost.id}" />">
                         <img alt="thumbnail-img" src="${firstPost.imgLink}"/>
                         <div class="mask card-content-overlay">
                             <h5 class="text-white">${firstPost.title}</h5>
-                            <p>${firstPost.creationDate}</p>
+                            <p>
+                                <fmt:formatDate pattern="dd-MM-yyyy" value="${firstPost.creationDate}"/>
+                            </p>
                         </div>
                     </a>
                 </div>
@@ -86,7 +91,9 @@
                             </div>
                             <div class="col-8 pl-1">
                                 <p class="font-weight-bold text-dark">${post.title}</p>
-                                <p class="text-small">${post.creationDate}</p>
+                                <p class="text-small">
+                                    <fmt:formatDate pattern="dd-MM-yyyy" value="${post.creationDate}"/>
+                                </p>
                             </div>
                         </div>
                     </a>
@@ -105,11 +112,11 @@
                 <c:forEach items="${categoryPostList.posts}" var="post">
                     <div class="col-6">
                         <div class="card bg-image hover-zoom fix-height-250">
-                            <a href="<c:url value="/blog?site=post&post-id=${post.id}" />">
+                            <a href='<c:url value="/blog?site=post&post-id=${post.id}" />'>
                                 <img alt="thumbnail-img" src="${post.imgLink}"/>
                                 <div class="mask card-content-overlay">
                                     <h5 class="text-white">${post.title}</h5>
-                                    <p>${post.creationDate}</p>
+                                    <p><fmt:formatDate pattern="dd-MM-yyyy" value="${post.creationDate}"/></p>
                                 </div>
                             </a>
                         </div>
@@ -124,12 +131,14 @@
             <h1 class="py-4">${sessionScope["categories"].getFirstCategoryOfPost(categoryPostList.getPostByIndex(0))}</h1>
             <div class="row">
                 <c:forEach items="${categoryPostList.posts}" var="post">
-                    <div class="card">
-                        <a href="<c:url value="/blog?site=post&post-id=${post.id}" />">
+                    <div class="card ">
+                        <a href='<c:url value="/blog?site=post&post-id=${post.id}" />'>
                             <img alt="thumbnail-img" class="card-img-top" src="${post.imgLink}"/>
                             <div class="card-body">
                                 <p class="font-weight-bold text-dark">${post.title}</p>
-                                <p class="text-small">${post.creationDate}</p>
+                                <p class="text-small">
+                                    <fmt:formatDate pattern="dd-MM-yyyy" value="${post.creationDate}"/>
+                                </p>
                             </div>
                         </a>
                     </div>

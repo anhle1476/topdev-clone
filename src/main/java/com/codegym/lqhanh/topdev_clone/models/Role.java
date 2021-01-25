@@ -5,7 +5,7 @@ public class Role {
     private String name;
     private boolean canUpdateUsers;
     private boolean canUpdatePermission;
-    private boolean canUpdateTags;
+    private boolean canUpdateCategories;
     private boolean canApprovesPosts;
     private boolean canEditOthersPosts;
     private boolean canWritePosts;
@@ -15,7 +15,7 @@ public class Role {
         this.name = builder.name;
         this.canUpdateUsers = builder.canUpdateUsers;
         this.canUpdatePermission = builder.canUpdatePermission;
-        this.canUpdateTags = builder.canUpdateTags;
+        this.canUpdateCategories = builder.canUpdateCategories;
         this.canApprovesPosts = builder.canApprovesPosts;
         this.canEditOthersPosts = builder.canEditOthersPosts;
         this.canWritePosts = builder.canWritePosts;
@@ -53,12 +53,12 @@ public class Role {
         this.canUpdatePermission = canUpdatePermission;
     }
 
-    public boolean isCanUpdateTags() {
-        return canUpdateTags;
+    public boolean isCanUpdateCategories() {
+        return canUpdateCategories;
     }
 
-    public void setCanUpdateTags(boolean canUpdateTags) {
-        this.canUpdateTags = canUpdateTags;
+    public void setCanUpdateCategories(boolean canUpdateCategories) {
+        this.canUpdateCategories = canUpdateCategories;
     }
 
     public boolean isCanApprovesPosts() {
@@ -90,7 +90,7 @@ public class Role {
         private final String name;
         private boolean canUpdateUsers;
         private boolean canUpdatePermission;
-        private boolean canUpdateTags;
+        private boolean canUpdateCategories;
         private boolean canApprovesPosts;
         private boolean canEditOthersPosts;
         private boolean canWritePosts;
@@ -110,8 +110,8 @@ public class Role {
             return this;
         }
 
-        public RoleBuilder setCanUpdateTags(boolean canUpdateTags) {
-            this.canUpdateTags = canUpdateTags;
+        public RoleBuilder setCanUpdateCategories(boolean canUpdateCategories) {
+            this.canUpdateCategories = canUpdateCategories;
             return this;
         }
 
