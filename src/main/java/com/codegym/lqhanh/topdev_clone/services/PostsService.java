@@ -53,7 +53,16 @@ public class PostsService {
         try {
             return postsDAO.getApprovedPostsUnderUserAuthorized(id);
         } catch (SQLException e) {
-            System.out.println("Fetch posts failed: " + e.getMessage());
+            System.out.println("Fetch approved posts failed: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Post> getUnapprovedPostsByUserId(int id) {
+        try {
+            return postsDAO.getUnapprovedPostsUnderUserAuthorized(id);
+        } catch (SQLException e) {
+            System.out.println("Fetch unapproved posts failed: " + e.getMessage());
             return Collections.emptyList();
         }
     }

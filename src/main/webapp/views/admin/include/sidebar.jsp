@@ -72,18 +72,18 @@
                                     <a href="${pageContext.servletContext.contextPath}/admin?site=current-posts"
                                        class="nav-link">
                                         <i class="fas fa-list nav-icon"></i>
-                                        <p>Bài viết hiện tại</p>
+                                        <p>Đã được duyệt</p>
                                     </a>
                                 </li>
                                 <!-- /current-posts -->
                             </c:if>
 
-                            <c:if test="${userRole.canApprovesPosts}">
+                            <c:if test="${userRole.canWritePosts || userRole.canApprovesPosts}">
                                 <!-- Approve posts -->
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="${pageContext.servletContext.contextPath}/admin?site=unapproved-posts" class="nav-link">
                                         <i class="fas fa-check-square nav-icon"></i>
-                                        <p>Phê duyệt bài viết</p>
+                                        <p>Chưa được duyệt</p>
                                     </a>
                                 </li>
                                 <!-- /approve-posts -->

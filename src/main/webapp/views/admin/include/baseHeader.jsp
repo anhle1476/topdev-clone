@@ -13,3 +13,5 @@
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/admin-assets/plugins/fontawesome-free/css/all.min.css"/>
 <!-- Theme style -->
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/admin-assets/dist/css/adminlte.min.css"/>
+<!-- Custom style -->
+<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/admin-assets/dist/css/custom.css"/>

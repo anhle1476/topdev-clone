@@ -1,0 +1,4 @@
+.btn .fas,
+.btn .fab {
+    pointer-events: none;
+}

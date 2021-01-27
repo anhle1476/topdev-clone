@@ -129,9 +129,17 @@ public class PostsDAO {
     }
 
     public List<Post> getApprovedPostsUnderUserAuthorized(int userId) throws SQLException {
+        return getPostListUnderUserAuthorized(userId, "{CALL getApprovedPostsUnderUserAuthorized(?)}");
+    }
+
+    public List<Post> getUnapprovedPostsUnderUserAuthorized(int userId) throws SQLException {
+        return getPostListUnderUserAuthorized(userId, "{CALL getUnapprovedPostsUnderUserAuthorized(?)}");
+    }
+
+    public List<Post> getPostListUnderUserAuthorized(int userId, String query) throws SQLException {
         try (
                 Connection con = DAOUtils.getConnection();
-                CallableStatement statement = con.prepareCall("{CALL getApprovedPostsUnderUserAuthorized(?)}")
+                CallableStatement statement = con.prepareCall(query)
         ) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();

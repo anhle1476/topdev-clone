@@ -72,7 +72,7 @@
                                     </thead>
                                     <tbody>
                                     <c:forEach items='${requestScope["postList"]}' var="post">
-                                        <tr>
+                                        <tr id="post-${post.id}">
                                             <td>${post.title}</td>
                                             <td class="shorten">${post.summary}</td>
                                             <td>${post.author.name}</td>
@@ -87,8 +87,9 @@
                                                     <i class="fas fa-pencil-alt"></i>
                                                 </a>
                                                 <button
-                                                        class="btn btn-danger btn-sm btn-edit"
+                                                        class="btn btn-danger btn-sm btn-edit delete-btn"
                                                         title="Xóa"
+                                                        id="delete-${post.id}"
                                                 >
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -136,25 +137,8 @@
 <script src="${pageContext.servletContext.contextPath}/admin-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 <!-- AdminLTE for demo purposes -->
-<script src="${pageContext.servletContext.contextPath}/admin-assets/dist/js/demo.js"></script>
+<%--<script src="${pageContext.servletContext.contextPath}/admin-assets/dist/js/demo.js"></script>--%>
 <!-- Page specific script -->
-<script>
-    $(function () {
-        $("#posts-table").DataTable({
-            responsive: true,
-            lengthChange: true,
-            autoWidth: false,
-            ordering: true,
-            info: true,
-            paging: true,
-        });
-    });
-    document.querySelectorAll(".shorten").forEach(cell => {
-        let text = cell.innerText;
-        if (text.length > 150) {
-            cell.innerText = text.slice(0, 150) + "..."
-        }
-    });
-</script>
+<c:import url="include/postTableJs.jsp" />
 </body>
 </html>

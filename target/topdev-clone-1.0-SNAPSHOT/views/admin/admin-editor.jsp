@@ -34,7 +34,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Bài viết mới</h1>
+                        <c:choose>
+                            <c:when test="${isNewPost}">
+                                <h1>Bài viết mới</h1>
+                            </c:when>
+                            <c:otherwise>
+                                <h1>Chỉnh sửa bài viết</h1>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>

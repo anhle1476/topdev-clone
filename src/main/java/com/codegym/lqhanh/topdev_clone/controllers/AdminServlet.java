@@ -30,9 +30,9 @@ public class AdminServlet extends HttpServlet {
             case "current-posts":
                 forwardToCurrentPosts(request, response);
                 break;
-//            case "editor":
-//                forwardToEditor(request, response);
-//                break;
+            case "unapproved-posts":
+                forwardToUnapprovedPosts(request, response);
+                break;
         }
     }
 
@@ -50,6 +50,15 @@ public class AdminServlet extends HttpServlet {
         request.setAttribute("postList", postList);
         request.getRequestDispatcher("/views/admin/admin-current-posts.jsp").forward(request, response);
     }
+
+
+    private void forwardToUnapprovedPosts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = getUserFromSession(request);
+        List<Post> postList = postsService.getUnapprovedPostsByUserId(user.getId());
+        request.setAttribute("postList", postList);
+        request.getRequestDispatcher("/views/admin/admin-unapproved-posts.jsp").forward(request, response);
+    }
+
 
 //    private void forwardToEditor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        request.getRequestDispatcher(request.getContextPath() + "/admin-editor").forward(request, response);

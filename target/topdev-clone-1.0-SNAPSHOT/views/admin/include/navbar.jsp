@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -27,3 +28,13 @@
         </li>
     </ul>
 </nav>
+<c:if test='${sessionScope["notifications"] != null}' >
+    <c:forEach items='${sessionScope["notifications"]}' var="notification">
+        <div class="d-none toasts">
+            <span class="toast-bg">${notification.className}</span>
+            <span class="toast-body">${notification.message}</span>
+        </div>
+    </c:forEach>
+    <c:remove var="notifications" scope="session" />
+</c:if>
+

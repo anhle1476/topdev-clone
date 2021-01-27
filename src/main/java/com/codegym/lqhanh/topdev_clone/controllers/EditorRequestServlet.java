@@ -1,9 +1,10 @@
 package com.codegym.lqhanh.topdev_clone.controllers;
 
-import com.codegym.lqhanh.topdev_clone.models.modelcontainer.CategoryMap;
+import com.codegym.lqhanh.topdev_clone.models.Notification;
 import com.codegym.lqhanh.topdev_clone.models.Post;
 import com.codegym.lqhanh.topdev_clone.models.Tag;
 import com.codegym.lqhanh.topdev_clone.models.User;
+import com.codegym.lqhanh.topdev_clone.models.modelcontainer.CategoryMap;
 import com.codegym.lqhanh.topdev_clone.services.PostsService;
 import com.codegym.lqhanh.topdev_clone.services.StringUtils;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -37,9 +37,15 @@ public class EditorRequestServlet extends HttpServlet {
     }
 
 
-    private void createNewPost(HttpServletRequest request, HttpServletResponse response) {
+    private void createNewPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Post newPost = parsePostFromEditor(request);
-        postsService.addNewPost(newPost);
+        boolean result = postsService.addNewPost(newPost);
+        String notificationType = result ? Notification.SUCCESS : Notification.WARNING;
+        String message = result ? "Thêm bài viết thành công." : "Thêm bài viết thất bại!";
+        List<Notification> notifications = new ArrayList<>();
+        notifications.add(new Notification(notificationType, message));
+        request.getSession().setAttribute("notifications", notifications);
+        response.sendRedirect(request.getContextPath() + "/admin?site=dashboard");
     }
 
 
@@ -47,8 +53,11 @@ public class EditorRequestServlet extends HttpServlet {
         Post post = parsePostFromEditor(request);
         User user = (User) request.getSession().getAttribute("user");
         String result = postsService.editPost(post, user);
-        PrintWriter writer = response.getWriter();
-        writer.println(result);
+        String notificationType = result.contains("thành công") ? Notification.SUCCESS : Notification.WARNING;
+        List<Notification> notifications = new ArrayList<>();
+        notifications.add(new Notification(notificationType, result));
+        request.getSession().setAttribute("notifications", notifications);
+        response.sendRedirect(request.getContextPath() + "/admin?site=current-posts");
     }
 
     private Post parsePostFromEditor(HttpServletRequest request) {

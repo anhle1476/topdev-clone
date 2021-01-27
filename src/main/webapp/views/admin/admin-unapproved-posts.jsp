@@ -1,13 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
 
     <c:import url="include/baseHeader.jsp"></c:import>
-    <title>Current Post - Topdev CLONE</title>
+    <title>Unapproved Posts - Topdev CLONE</title>
 
     <!-- DataTables -->
     <link
@@ -36,7 +36,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Bài viết hiện tại</h1>
+                        <h1>Bài viết chưa được duyệt</h1>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    Quản lý các bài viết đã được phê duyệt
+                                    Quản lý các bài viết chưa được phê duyệt
                                 </h3>
                             </div>
                             <!-- /.card-header -->
@@ -71,28 +71,42 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <c:set var="user" value='${sessionScope["user"]}'/>
+                                    <c:set var="userRole" value='${user.role}'/>
+
                                     <c:forEach items='${requestScope["postList"]}' var="post">
                                         <tr id="post-${post.id}">
                                             <td>${post.title}</td>
                                             <td class="shorten">${post.summary}</td>
                                             <td>${post.author.name}</td>
-                                            <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${post.creationDate}" /></td>
-                                            <td><fmt:formatDate pattern = "dd-MM-yyyy" value = "${post.lastUpdated}" /></td>
+                                            <td><fmt:formatDate pattern="dd-MM-yyyy" value="${post.creationDate}"/></td>
+                                            <td><fmt:formatDate pattern="dd-MM-yyyy" value="${post.lastUpdated}"/></td>
                                             <td>
-                                                <a
-                                                        class="btn btn-info btn-sm btn-edit"
-                                                        title="Chỉnh sửa"
-                                                        href="${pageContext.servletContext.contextPath}/admin/editor?edit=exists-post&post-id=${post.id}"
-                                                >
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </a>
-                                                <button
-                                                        class="btn btn-danger btn-sm btn-edit delete-btn"
-                                                        title="Xóa"
-                                                        id="delete-${post.id}"
-                                                >
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                <c:if test="${user.id == post.author.id || userRole.canEditOthersPosts}">
+                                                    <a
+                                                            class="btn btn-info btn-sm btn-edit"
+                                                            title="Chỉnh sửa"
+                                                            href="${pageContext.servletContext.contextPath}/admin/editor?edit=exists-post&post-id=${post.id}"
+                                                    >
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                    <button
+                                                            class="btn btn-danger btn-sm btn-edit delete-btn"
+                                                            title="Xóa"
+                                                            id="delete-${post.id}"
+                                                    >
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </c:if>
+                                                <c:if test="${userRole.canApprovesPosts}">
+                                                    <button
+                                                            class="btn btn-success btn-sm btn-edit approve-btn"
+                                                            title="Phê duyệt"
+                                                            id="approve-${post.id}"
+                                                    >
+                                                        <i class="fas fa-thumbs-up"></i>
+                                                    </button>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
