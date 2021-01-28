@@ -36,16 +36,15 @@ public class AdminServlet extends HttpServlet {
         }
     }
 
-
     private void forwardToDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = getUserFromSession(request);
+        User user = ServletUtils.getUserFromSession(request);
         String postStatus = userService.getUserPostStatus(user.getId());
         request.setAttribute("postStatus", postStatus);
         request.getRequestDispatcher("/views/admin/admin-home.jsp").forward(request, response);
     }
 
     private void forwardToCurrentPosts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = getUserFromSession(request);
+        User user = ServletUtils.getUserFromSession(request);
         List<Post> postList = postsService.getApprovedPostsByUserId(user.getId());
         request.setAttribute("postList", postList);
         request.getRequestDispatcher("/views/admin/admin-current-posts.jsp").forward(request, response);
@@ -53,19 +52,9 @@ public class AdminServlet extends HttpServlet {
 
 
     private void forwardToUnapprovedPosts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = getUserFromSession(request);
+        User user = ServletUtils.getUserFromSession(request);
         List<Post> postList = postsService.getUnapprovedPostsByUserId(user.getId());
         request.setAttribute("postList", postList);
         request.getRequestDispatcher("/views/admin/admin-unapproved-posts.jsp").forward(request, response);
     }
-
-
-//    private void forwardToEditor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.getRequestDispatcher(request.getContextPath() + "/admin-editor").forward(request, response);
-//    }
-
-    private User getUserFromSession(HttpServletRequest request) {
-        return (User) request.getSession().getAttribute("user");
-    }
-
 }

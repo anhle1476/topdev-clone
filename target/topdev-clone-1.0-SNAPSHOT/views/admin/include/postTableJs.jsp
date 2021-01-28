@@ -89,6 +89,4 @@
             handleAJAXRequest(response, "delete", successMsg, failedMsg);
         }
     });
-
-
 </script>

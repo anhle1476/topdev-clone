@@ -76,12 +76,30 @@ public class PostsService {
         }
     }
 
-    public String editPost(Post post, User requestUser) {
+    public boolean editPost(Post post, User requestUser) {
         try {
             return postsDAO.editPost(post, requestUser.getId());
         } catch (SQLException e) {
             System.out.println("Edit post ID" + post.getId() + " failed: " + e.getMessage());
-            return e.getMessage();
+            return false;
+        }
+    }
+
+    public boolean approvePost(int postId, User requestUser) {
+        try {
+            return postsDAO.approvePost(postId, requestUser.getId());
+        } catch (SQLException e) {
+            System.out.println("Approve post ID" + postId + " failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean deletePost(int postId, User requestUser) {
+        try {
+            return postsDAO.deletePost(postId, requestUser.getId());
+        } catch (SQLException e) {
+            System.out.println("Delete post ID" + postId + " failed: " + e.getMessage());
+            return false;
         }
     }
 }

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -52,10 +53,12 @@ public class EditorRequestServlet extends HttpServlet {
     private void editExistsPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Post post = parsePostFromEditor(request);
         User user = (User) request.getSession().getAttribute("user");
-        String result = postsService.editPost(post, user);
-        String notificationType = result.contains("thành công") ? Notification.SUCCESS : Notification.WARNING;
-        List<Notification> notifications = new ArrayList<>();
-        notifications.add(new Notification(notificationType, result));
+        boolean result = postsService.editPost(post, user);
+
+        String notificationType = result ? Notification.SUCCESS : Notification.WARNING;
+        String message = result ? "Chỉnh sửa bài viết thành công" : "Chỉnh sửa bài viết thất bại";
+        List<Notification> notifications = Arrays.asList(new Notification(notificationType, message));
+
         request.getSession().setAttribute("notifications", notifications);
         response.sendRedirect(request.getContextPath() + "/admin?site=current-posts");
     }

@@ -43,7 +43,7 @@ public class EditorServlet extends HttpServlet {
         System.out.println("ok");
         int postId = Integer.parseInt(request.getParameter("post-id"));
         System.out.println("edit post id: " + postId);
-        User requestUser = (User) request.getSession().getAttribute("user");
+        User requestUser = ServletUtils.getUserFromSession(request);
         System.out.println("user: " + requestUser.getId());
         Post editingPost = postsService.getEditingPost(postId, requestUser);
         System.out.println("post: " + editingPost);

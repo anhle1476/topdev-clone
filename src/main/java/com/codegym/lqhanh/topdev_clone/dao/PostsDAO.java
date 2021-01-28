@@ -34,7 +34,7 @@ public class PostsDAO {
         }
     }
 
-    public String editPost(Post post, int requestUserId) throws SQLException {
+    public boolean editPost(Post post, int requestUserId) throws SQLException {
         try (
                 Connection con = DAOUtils.getConnection();
                 CallableStatement statement = con.prepareCall("{CALL editPost(?, ?, ?, ?, ?, ?, ?, ?)}")
@@ -51,7 +51,31 @@ public class PostsDAO {
             if (!resultSet.next())
                 throw new SQLException("Can not fetch result");
             else
-                return resultSet.getString("result");
+                return resultSet.getBoolean("result");
+        }
+    }
+
+    public boolean approvePost(int postId, int requestUserId) throws SQLException {
+        return executePostTableAction(postId, requestUserId, "{CALL approvePost(?, ?)}");
+    }
+
+    public boolean deletePost(int postId, int requestUserId) throws SQLException {
+        return executePostTableAction(postId, requestUserId, "{CALL deletePostById(?, ?)}");
+    }
+
+    public boolean executePostTableAction(int postId, int requestUserId, String query) throws SQLException {
+        try (
+                Connection con = DAOUtils.getConnection();
+                CallableStatement statement = con.prepareCall(query)
+        ) {
+            statement.setInt(1, requestUserId);
+            statement.setInt(2, postId);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next())
+                throw new SQLException("Can not fetch result");
+            else
+                return resultSet.getBoolean("result");
         }
     }
 

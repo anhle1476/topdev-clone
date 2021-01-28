@@ -1,5 +1,6 @@
 package com.codegym.lqhanh.topdev_clone.controllers;
 
+import com.codegym.lqhanh.topdev_clone.models.User;
 import com.codegym.lqhanh.topdev_clone.services.PostsService;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,8 @@ public class AdminRequestServlet extends HttpServlet {
     private void handleApprovePostRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int postId = parsePostId(request);
-            boolean result = true;
+            User user = ServletUtils.getUserFromSession(request);
+            boolean result = postsService.approvePost(postId, user);
             sendResponse(response, "approve", postId, result);
         } catch (Exception e) {
             handleInvalidRequest(response);
@@ -46,7 +48,8 @@ public class AdminRequestServlet extends HttpServlet {
     private void handleDeletePostRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             int postId = parsePostId(request);
-            boolean result = true;
+            User user = ServletUtils.getUserFromSession(request);
+            boolean result = postsService.deletePost(postId, user);
             sendResponse(response, "delete", postId, result);
         } catch (Exception e) {
             handleInvalidRequest(response);
