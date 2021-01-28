@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <a href="#" class="btn btn-info">
+                                        <a href="#" class="btn btn-info logout-btn">
                                             <i class="fas fa-sign-out-alt"></i> Đăng xuất
                                         </a>
                                     </div>
@@ -137,5 +137,6 @@
 
 <!-- REQUIRED SCRIPTS -->
 <c:import url="include/baseJs.jsp"></c:import>
+<c:import url="include/customAdminJs.jsp" />
 </body>
 </html>

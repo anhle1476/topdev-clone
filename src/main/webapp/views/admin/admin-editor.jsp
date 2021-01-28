@@ -133,10 +133,10 @@
 
 <!-- REQUIRED SCRIPTS -->
 <c:import url="include/baseJs.jsp"/>
+<c:import url="include/customAdminJs.jsp" />
 <!-- Summernote -->
 <script src="${pageContext.servletContext.contextPath}/admin-assets/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="${pageContext.servletContext.contextPath}/admin-assets/dist/js/demo.js"></script>
+
 <!-- Page specific script -->
 <script>
     $(function () {

@@ -1,5 +1,6 @@
-package com.codegym.lqhanh.topdev_clone.controllers;
+package com.codegym.lqhanh.topdev_clone.controllers.formrequest;
 
+import com.codegym.lqhanh.topdev_clone.controllers.ServletUtils;
 import com.codegym.lqhanh.topdev_clone.models.User;
 import com.codegym.lqhanh.topdev_clone.services.PostsService;
 
@@ -8,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -15,6 +17,11 @@ import java.io.PrintWriter;
 public class AdminRequestServlet extends HttpServlet {
     public static final String RESPONSE_JSON = "{\"request\":\"%s\",\"postId\":%d,\"isAccepted\":%s}";
     private final PostsService postsService = new PostsService();
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect(request.getContextPath() + "/admin?site=dashboard");
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,10 +35,12 @@ public class AdminRequestServlet extends HttpServlet {
             case "delete-post":
                 handleDeletePostRequest(request, response);
                 break;
+            case "logout":
+                handleLogout(request, response);
+                break;
             default:
                 handleInvalidRequest(response);
         }
-
     }
 
     private void handleApprovePostRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -53,6 +62,20 @@ public class AdminRequestServlet extends HttpServlet {
             sendResponse(response, "delete", postId, result);
         } catch (Exception e) {
             handleInvalidRequest(response);
+        }
+    }
+
+    private void handleLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String logoutJSON = "{\"action\":\"logout\",\"isAccepted\":%s}";
+        PrintWriter writer = response.getWriter();
+        try {
+            HttpSession session = request.getSession();
+            session.removeAttribute("user");
+            session.invalidate();
+            writer.write(String.format(logoutJSON, true));
+        } catch (Exception e) {
+            writer.printf(logoutJSON, false);
+            writer.write(String.format(logoutJSON, false));
         }
     }
 

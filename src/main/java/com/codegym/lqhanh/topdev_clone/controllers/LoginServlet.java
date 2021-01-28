@@ -13,15 +13,6 @@ public class LoginServlet extends HttpServlet {
     private final UserService userService = new UserService();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = "admin@gmail.com";
-        String password = "admin";
-
-        User user = userService.loginAndFetchUser(email, password);
-        if (user != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
-            request.getRequestDispatcher( request.getContextPath() + "/admin?site=dashboard")
-                    .forward(request, response);
-        }
+        request.getRequestDispatcher( "/views/admin/admin-login.jsp").forward(request, response);
     }
 }

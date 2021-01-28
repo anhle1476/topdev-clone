@@ -22,9 +22,9 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" role="button">
+            <button class="nav-link logout-btn btn">
                 Đăng xuất <i class="fas fa-sign-out-alt ml-2"></i>
-            </a>
+            </button>
         </li>
     </ul>
 </nav>

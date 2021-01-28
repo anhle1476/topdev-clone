@@ -12,6 +12,12 @@ public class MustLoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+
+        // prevent back-button login
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidation");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
+
         Object userObj = req.getSession().getAttribute("user");
         if (userObj == null)
             res.sendRedirect(req.getContextPath() + "/login");

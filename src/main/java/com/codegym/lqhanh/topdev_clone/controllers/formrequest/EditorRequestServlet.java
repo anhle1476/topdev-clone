@@ -1,4 +1,4 @@
-package com.codegym.lqhanh.topdev_clone.controllers;
+package com.codegym.lqhanh.topdev_clone.controllers.formrequest;
 
 import com.codegym.lqhanh.topdev_clone.models.Notification;
 import com.codegym.lqhanh.topdev_clone.models.Post;
