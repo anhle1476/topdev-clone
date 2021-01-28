@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <c:import url="include/baseHeader.jsp"></c:import>
+    <c:import url="include/baseHeader.jsp"/>
     <!-- summernote -->
     <link
             rel="stylesheet"

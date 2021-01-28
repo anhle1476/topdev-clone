@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <c:import url="include/baseHeader.jsp"></c:import>
+    <c:import url="include/baseHeader.jsp"/>
     <title>Dashboard - Topdev CLONE</title>
 </head>
 <body class="hold-transition sidebar-mini">

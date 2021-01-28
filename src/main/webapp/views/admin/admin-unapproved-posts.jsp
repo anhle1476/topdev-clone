@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 
-    <c:import url="include/baseHeader.jsp"></c:import>
+    <c:import url="include/baseHeader.jsp"/>
     <title>Unapproved Posts - Topdev CLONE</title>
 
     <!-- DataTables -->

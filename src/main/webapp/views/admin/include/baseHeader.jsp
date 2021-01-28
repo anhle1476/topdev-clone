@@ -3,6 +3,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+<%
+    // prevent user from go directly into jsp files
+    if (session.getAttribute("user") == null)
+        response.sendRedirect(request.getContextPath() + "/login");
+%>
 
 <!-- Google Font: Source Sans Pro -->
 <link
